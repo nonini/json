@@ -1,63 +1,43 @@
 <?php
 
-namespace gipfl\Json;
+namespace nonini\Json;
+
+use JsonException;
 
 use function json_decode;
 use function json_encode;
-use function json_last_error;
 
 class JsonString
 {
-    const DEFAULT_FLAGS = JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
+    protected const DEFAULT_FLAGS = JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+        | JSON_UNESCAPED_LINE_TERMINATORS | JSON_THROW_ON_ERROR;
 
     /**
      * Encode with well-known flags, as we require the result to be reproducible
      *
-     * @param $mixed
-     * @param int|null $flags
-     * @return string
-     * @throws JsonEncodeException
+     * @param mixed $mixed
+     * @throws JsonException
      */
-    public static function encode($mixed, $flags = null)
+    public static function encode($mixed, ?int $flags = null): string
     {
-        if ($flags === null) {
-            $flags = self::DEFAULT_FLAGS;
-        } else {
-            $flags = self::DEFAULT_FLAGS | $flags;
-        }
-        $result = json_encode($mixed, $flags);
-
-        if ($result === false && json_last_error() !== JSON_ERROR_NONE) {
-            throw JsonEncodeException::forLastJsonError();
-        }
-
-        return $result;
+        return json_encode($mixed, self::DEFAULT_FLAGS | $flags);
     }
 
     /**
      * Decode the given JSON string and make sure we get a meaningful Exception
      *
-     * @param string $string
      * @return mixed
-     * @throws JsonDecodeException
+     * @throws JsonException
      */
-    public static function decode($string)
+    public static function decode(string $string)
     {
-        $result = json_decode($string);
-
-        if ($result === null && json_last_error() !== JSON_ERROR_NONE) {
-            throw JsonDecodeException::forLastJsonError();
-        }
-
-        return $result;
+        return json_decode($string, null, 512, JSON_THROW_ON_ERROR);
     }
 
     /**
-     * @param $string
-     * @return ?string
-     * @throws JsonDecodeException
+     * @return mixed
      */
-    public static function decodeOptional($string)
+    public static function decodeOptional(?string $string)
     {
         if ($string === null) {
             return null;

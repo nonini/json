@@ -1,11 +1,11 @@
 {
-    "name": "gipfl/json",
+    "name": "nonini/json",
     "description": "Simple JSON-related helper classes and interfaces",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "gipfl\\Json\\": "src/"
+            "nonini\\Json\\": "src/"
         }
     },
     "authors": [
@@ -16,5 +16,11 @@
     ],
     "require": {
       "ext-json": "*"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.10",
+        "phpunit/phpunit": "^10.3",
+        "squizlabs/php_codesniffer": "^3.7",
+        "symplify/easy-coding-standard": "^12.0.8"
     }
 }

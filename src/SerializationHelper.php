@@ -1,6 +1,6 @@
 <?php
 
-namespace gipfl\Json;
+namespace nonini\Json;
 
 use InvalidArgumentException;
 use JsonSerializable;
@@ -44,7 +44,7 @@ class SerializationHelper
         throw new InvalidArgumentException('Serializable value expected, got ' . static::getPhpType($value));
     }
 
-    public static function getPhpType($var)
+    protected static function getPhpType($var)
     {
         if (is_object($var)) {
             return get_class($var);
